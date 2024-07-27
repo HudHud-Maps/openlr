@@ -157,10 +157,8 @@ BEGIN
         ELSIF ST_DWithin(ST_Transform(ST_EndPoint(g), 3857), ST_Transform(ST_StartPoint(current_way), 3857), 50) THEN
             RAISE NOTICE 'Closest point';
             g := ST_MakeLine(g, current_way);
-        ELSE
-            RAISE NOTICE 'Distance %', ST_Distance(ST_Transform(ST_EndPoint(g), 3857), ST_Transform(ST_StartPoint(current_way), 3857));
-            RAISE NOTICE 'DISTANCE 2 %'
-            RAISE NOTICE 'Closest point 2';
+        ELSIF ST_DWithin(ST_Transform(g, 3857), ST_Transform(current_way, 3857), 10) THEN
+            RAISE NOTICE 'very close lines';
             closest_point := ST_ClosestPoint(g, current_way);
             g_fraction := ST_LineLocatePoint(g, closest_point);
             RAISE NOTICE 'Start way: %', ST_AsText(ST_LineSubstring(g, 0, g_fraction));
@@ -169,6 +167,13 @@ BEGIN
             fraction := ST_LineLocatePoint(current_way, closest_point2);
             remaining_way := ST_LineSubstring(current_way, fraction, 1);
             g := ST_MakeLine(start_way, remaining_way);
+        ELSE
+            -- RAISE NOTICE 'Distance %', ST_Distance(ST_Transform(ST_EndPoint(g), 3857), ST_Transform(ST_StartPoint(current_way), 3857));
+            -- -- RAISE NOTICE 'DISTANCE 2 %'
+            -- -- RAISE NOTICE 'Closest point 2';
+            -- RAISE NOTICE 'Distance %', ;
+            -- RAISE NOTICE 'TOUCH %', ST_Touches(g, current_way);
+            RAISE EXCEPTION 'No intersection or close point found';
         END IF; 
     END LOOP;
     RETURN g;
