@@ -43,12 +43,6 @@ BEGIN
     -- Calculate start and end fractions
     start_fraction := LEAST(distance_from_start / way_length, 1);
     end_fraction := GREATEST(1 - (distance_from_end / way_length), 0);
-
-    -- Ensure start_fraction is less than end_fraction
-    -- IF start_fraction >= end_fraction THEN
-    --     RAISE EXCEPTION 'Invalid truncation: start point would be after or at the end point';
-    -- END IF;
-
     -- Truncate the linestring
     IF end_fraction < start_fraction THEN
         RETURN ST_Transform(way_geom, 4326);
@@ -65,51 +59,6 @@ BEGIN
 END;
 $$
  LANGUAGE plpgsql;
-
--- DROP FUNCTION IF EXISTS construct_route(bigint[][]);
--- CREATE OR REPLACE FUNCTION construct_route(ways bigint[][])
--- RETURNS geometry AS $$
--- DECLARE
---     g geometry(LineString,4326);
---     i integer;
---     current_way geometry;
---     intersection_point geometry;
---     fraction float;
---     remaining_way geometry;
---     g_fraction float;
---     start_way geometry;
---     way bigint[];
---     first_element boolean := true;
--- BEGIN
---     FOREACH way SLICE 1 IN ARRAY ways LOOP
---         IF first_element THEN
---             g := (SELECT truncate_way(way));
---             first_element := false;
---             CONTINUE;
---         END IF;
---         RAISE NOTICE 'Current way: %', way;
---         SELECT truncate_way(way) INTO current_way;
---         -- RAISE NOTICE 'Current way: %', ST_AsText(current_way);
---         intersection_point := ST_Intersection(g, current_way);
---         RAISE NOTICE 'Intersection point: %', ST_AsText(intersection_point);
---         g_fraction := ST_LineLocatePoint(g, intersection_point);
---         start_way := ST_LineSubstring(g, 0, g_fraction);
---         RAISE NOTICE 'Fraction: %', g_fraction;
---         IF ST_GeometryType(intersection_point) = 'ST_Point' THEN
---             fraction := ST_LineLocatePoint(current_way, intersection_point);
---             -- Get the portion of current_way from intersection to end
---             remaining_way := ST_LineSubstring(current_way, fraction, 1);
---             g := ST_LineMerge(ST_Union(start_way, remaining_way));
---         ELSE
---         -- Concatenate the current way with g
---         g := ST_LineMerge(ST_Union(g, current_way));
---         END IF;
---     END LOOP;
-        
--- RETURN g;
--- END;
--- $$
--- LANGUAGE plpgsql;
 
 DROP FUNCTION IF EXISTS construct_route(bigint[][]);
 CREATE OR REPLACE FUNCTION construct_route(ways bigint[][])

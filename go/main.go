@@ -70,7 +70,7 @@ func main() {
 				sss = append(sss, fmt.Sprintf("ARRAY[%d,%d,%d,%d]", j[0], j[1], j[2], j[3]))
 			}
 			succ++
-			sFile.WriteString(fmt.Sprintf("%d | %s, ARRAY[%s]\n", i, res, strings.Join(sss, ",")))
+			sFile.WriteString(fmt.Sprintf("%d | %s | ARRAY[%s]\n", i, res, strings.Join(sss, ",")))
 		}
 	}
 	fmt.Println("Errors:", errors)
