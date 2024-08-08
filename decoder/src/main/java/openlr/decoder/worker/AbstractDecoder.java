@@ -234,9 +234,10 @@ public abstract class AbstractDecoder {
             int dist = line.distanceToPoint(lrp.getLongitudeDeg(),
                     lrp.getLatitudeDeg());
             // check distances
-            if (dist > maxDistance) {
-                continue;
-            }
+            // if (dist > maxDistance) {
+            //     continue;
+            // }
+            // CHANGED BY ME
             FunctionalRoadClass frc = line.getFRC();
 
             if (lrp.getLfrc() != null

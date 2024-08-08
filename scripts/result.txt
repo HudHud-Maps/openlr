@@ -1,0 +1,18 @@
+    osmIds {
+      unkownField: 1
+      ids {
+        osmId: 121936841
+        unkownField1: 0
+        unkownField2: 4255
+        unkownField3: 1897
+      }
+      ids {
+        osmId: 1123396363
+        unkownField1: 0
+      }
+      ids {
+        osmId: 353583775
+        unkownField1: 0
+      }
+    }
+ARRAY[ARRAY[121936841, 4255, 1897, 0], ARRAY[1123396363, 0, 0, 0], ARRAY[353583775, 0, 0, 0]]

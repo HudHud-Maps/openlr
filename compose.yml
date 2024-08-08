@@ -1,0 +1,14 @@
+services:
+  postgis:
+    image: postgis/postgis:16-master
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    # ports:
+      # - "5434:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./scripts:/home
+volumes:
+  db-data:
